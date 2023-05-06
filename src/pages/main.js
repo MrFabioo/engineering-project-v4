@@ -5,15 +5,18 @@ import Header from '../components/Header';
 import List from '../components/List';
 import Map from '../components/Map';
 
-export const Main = () => {
-  // const [rating, setRating] = useState('');
+import './main.css';
 
+export const Main = () => {
   const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [childClicked, setChildClicked] = useState(null);
+
+  const [type, setType] = useState('restaurants');
+  const [rating, setRating] = useState('');
 
   const [coords, setCoords] = useState({});
-  const [bounds, setBounds] = useState(null);
-
-  // const [filteredPlaces, setFilteredPlaces] = useState([]);
+  const [bounds, setBounds] = useState({});
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,25 +29,46 @@ export const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (bounds) {
+    const filteredPlaces = places.filter((place) => place.rating > rating);
+    setFilteredPlaces(filteredPlaces);
+  }, [rating]);
+
+  useEffect(() => {
+    if (bounds.sw && bounds.ne) {
       setIsLoading(true);
 
-      getPlacesData(bounds.sw, bounds.ne).then((data) => {
-        setPlaces(data);
+      getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
+        setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+        setFilteredPlaces([]);
         setIsLoading(false);
       });
     }
-  }, [bounds]);
+  }, [type, bounds]);
   return (
-    <>
-      <Header />
-      <List places={places} isLoading={isLoading} />
-      <Map
-        setCoords={setCoords}
-        setBounds={setBounds}
-        coords={coords}
-        places={places}
-      />
-    </>
+    <div className='wrapper'>
+      <div className='left'>
+        <Header setCoords={setCoords} />
+        <List
+          className='list'
+          places={filteredPlaces.length ? filteredPlaces : places}
+          isLoading={isLoading}
+          childClicked={childClicked}
+          type={type}
+          setType={setType}
+          rating={rating}
+          setRating={setRating}
+        />
+      </div>
+      <div className='right'>
+        <Map
+          className='map'
+          setCoords={setCoords}
+          setBounds={setBounds}
+          coords={coords}
+          places={places}
+          setChildClicked={setChildClicked}
+        />
+      </div>
+    </div>
   );
 };

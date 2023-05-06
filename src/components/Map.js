@@ -2,11 +2,11 @@ import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import './MapStyle.css';
 
-const Map = ({ setCoords, setBounds, coords, places }) => {
+const Map = ({ setCoords, setBounds, coords, places, setChildClicked }) => {
   return (
     <div className='mapContainer'>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyC_7-SuRQv1t_yL59Mg8Bm8c5rOzb0tnUo' }}
+        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
         defaultCenter={{ lat: 0, lng: 0 }}
         center={coords}
         defaultZoom={14}
@@ -16,7 +16,9 @@ const Map = ({ setCoords, setBounds, coords, places }) => {
           setCoords({ lat: e.center.lat, lng: e.center.lng });
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
-        onChildClick={() => {}}
+        onChildClick={(child) => {
+          setChildClicked(child);
+        }}
       >
         {places?.map((place, i) => (
           <div

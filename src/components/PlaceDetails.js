@@ -1,11 +1,14 @@
 import React from 'react';
 
-const PlaceDetails = ({ place }) => {
+const PlaceDetails = ({ place, selected, refProp }) => {
+  if (selected)
+    refProp?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
   return (
     <div className='card'>
       <div className='image'>
         <img
-          style={{ height: 350 }}
+          style={{ width: 350 }}
           src={
             place.photo
               ? place.photo.images.large.url
@@ -28,8 +31,8 @@ const PlaceDetails = ({ place }) => {
         <div className='details'>
           <p>Ranking: {place.ranking}</p>
         </div>
-        {place?.cuisine.map(({ name, i }) => (
-          <div className='chip' key={i}>
+        {place?.cuisine?.map(({ name }) => (
+          <div className='chip' key={name}>
             {name}
           </div>
         ))}
