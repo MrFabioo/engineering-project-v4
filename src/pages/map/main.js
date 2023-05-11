@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { getPlacesData } from '../api';
-import Header from '../components/Header';
-import List from '../components/List';
-import Map from '../components/Map';
+import { getPlacesData } from '../../api';
+import Header from './Header';
+import List from './List';
+import Map from './Map';
 
 import './main.css';
 
