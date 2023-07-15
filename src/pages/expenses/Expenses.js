@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ExpensesPopup } from './ExpensesPopup';
-import { Expens } from './Expens';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { db } from '../../config/firebase-config';
 import {
   query,
@@ -9,41 +8,80 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
+import { ExpensesList } from './ExpensesList';
+import { ExpensesPopup } from './ExpensesPopup';
 
 export const Expenses = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [popupIsOpen, setPopupIsOpen] = useState(false);
+  const location = useLocation();
+  const { id, currency, title, users } = location.state;
+
+  const [usersAmount, setUsersAmount] = useState(users);
+
+  const [expensesDetail, setExpensesDetail] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, 'expenses'));
+    const q = query(collection(db, `expenses/${id}/detail`));
     const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
       let expensesArr = [];
       QuerySnapshot.forEach((doc) => {
         expensesArr.push({ ...doc.data(), id: doc.id });
       });
-      setExpenses(expensesArr);
+      setExpensesDetail(expensesArr);
     });
     return () => unsubscribe();
-  }, []);
+  }, [id]);
+  console.log(expensesDetail, 'asd');
+
+  const deleteExpens = async (id, idDetail) => {
+    await deleteDoc(doc(db, 'expenses', id, 'detail', idDetail));
+  };
+
+  // POPUP
+  const [popupIsOpen, setPopupIsOpen] = useState(false);
 
   const togglePopup = () => {
     setPopupIsOpen(!popupIsOpen);
   };
 
-  const deleteExpens = async (id) => {
-    await deleteDoc(doc(db, 'expenses', id));
-  };
-
   return (
     <div>
-      <h4>WYDATKI</h4>
-      <ul>
-        {expenses.map((expens, i) => (
-          <Expens key={i} expens={expens} deleteExpens={deleteExpens} db={db} />
+      <div className='title'>
+        <h4>{title}</h4>
+        <p>
+          {usersAmount?.map((user, i) =>
+            i === usersAmount.length - 1 ? `${user.name}` : `${user.name}, `
+          )}
+        </p>
+      </div>
+      <div className='container'>
+        <button onClick={() => togglePopup()}>Nowy wydatek</button>
+        {popupIsOpen && (
+          <ExpensesPopup
+            togglePopup={togglePopup}
+            db={db}
+            currency={currency}
+            usersAmount={usersAmount}
+            setUsersAmount={setUsersAmount}
+            id={id}
+          />
+        )}
+      </div>
+      <div className='expenses'>
+        {expensesDetail?.map((expens, i) => (
+          <ExpensesList
+            key={i}
+            expens={expens}
+            i={i}
+            currency={currency}
+            id={id}
+            usersAmount={usersAmount}
+            // setUsersAmount={setUsersAmount}
+            idDetail={expens.id}
+            deleteExpens={deleteExpens}
+          />
         ))}
-      </ul>
-      <button onClick={() => togglePopup()}>Dodaj</button>
-      {popupIsOpen && <ExpensesPopup togglePopup={togglePopup} />}
+      </div>
+      <Link to='/tours'>Back to product</Link>
     </div>
   );
 };

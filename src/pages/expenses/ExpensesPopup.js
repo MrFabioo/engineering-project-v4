@@ -1,68 +1,83 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
 import './Popup.css';
-import {
-  query,
-  collection,
-  onSnapshot,
-  doc,
-  addDoc,
-  deleteDoc,
-} from 'firebase/firestore';
 
-export const ExpensesPopup = ({ togglePopup, db }) => {
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [currency, setCurrency] = useState('PLN');
-  const [users, setUsers] = useState(['']);
+export const ExpensesPopup = ({
+  togglePopup,
+  db,
+  currency,
+  usersAmount,
+  id,
+  setUsersAmount,
+}) => {
+  const [titleDetail, setTitleDetail] = useState('');
+  const [costDetail, setCostDetail] = useState(0);
+  const [currencyDetail, setCurrencyDetail] = useState(currency);
+  const [payerDetail, setPayerDetail] = useState(usersAmount[0].name);
+  const [transactionDateDetail, setTransactionDateDetail] = useState(
+    new Date().toISOString().substr(0, 10)
+  );
 
   const createExpens = async (e) => {
     e.preventDefault(e);
-    if (title === '') {
+
+    if (titleDetail === '') {
       alert('Please enter a title expens');
       return;
     }
 
-    if (users[0] === '') {
-      alert('Please add at least one user');
-      return;
+    const checkedUserNames = usersAmount
+      .filter((user) => user.isChecked)
+      .map((user) => user.name);
+
+    try {
+      const resetUsersAmount = usersAmount.map((user) => ({
+        ...user,
+        isChecked: true,
+      }));
+      setUsersAmount(resetUsersAmount);
+
+      await addDoc(collection(db, `expenses/${id}/detail`), {
+        title: titleDetail,
+        cost: costDetail,
+        currency: currencyDetail,
+        payer: payerDetail,
+        transactionDate: transactionDateDetail,
+        checkedUserNames: checkedUserNames,
+      });
+
+      setTitleDetail('');
+      setCostDetail(0);
+      setTransactionDateDetail(new Date().toISOString().substr(0, 10));
+      togglePopup();
+    } catch (error) {
+      console.error('Error adding expense:', error);
     }
-
-    await addDoc(collection(db, 'expenses'), {
-      title: title,
-      description: description,
-      currency: currency,
-      users: users,
-    });
-    setTitle('');
-    setDescription('');
-    setCurrency('PLN');
-    setUsers(['']);
   };
 
-  const changeCurrency = (currency) => {
-    setCurrency(currency);
+  const changeCurrencyDetail = (currency) => {
+    setCurrencyDetail(currency);
   };
 
-  const handleAddUser = () => {
-    const lastUser = users[users.length - 1];
-    if (lastUser !== '') {
-      setUsers([...users, '']);
-    } else {
-      setErrorMessage('Wypełnij puste pole !!!');
-    }
+  const changePayerDetail = (payer) => {
+    setPayerDetail(payer);
   };
 
-  const handleUserChange = (e, i) => {
-    const newUser = [...users];
-    newUser[i] = e.target.value;
-    setUsers(newUser);
+  const handleCheckboxChange = (index) => {
+    const updatedUsersAmount = [...usersAmount];
+    updatedUsersAmount[index].isChecked = !updatedUsersAmount[index].isChecked;
+    setUsersAmount(updatedUsersAmount);
   };
 
-  const handleUserFocus = () => {
-    setErrorMessage('');
+  const calculateCheckedUsers = () => {
+    const checkedUsers = usersAmount.filter((user) => user.isChecked);
+    const checkedUsersCount = checkedUsers.length;
+    const costPerCheckedUser =
+      checkedUsersCount > 0 ? costDetail / checkedUsersCount : 0;
+    return { checkedUsersCount, costPerCheckedUser };
   };
+
+  const { costPerCheckedUser } = calculateCheckedUsers();
 
   return (
     <div className='popup'>
@@ -70,60 +85,74 @@ export const ExpensesPopup = ({ togglePopup, db }) => {
         <button className='close-btn' onClick={() => togglePopup()}>
           Close
         </button>
-        <form onSubmit={createExpens} className='form'>
+        <form className='form' onSubmit={createExpens}>
           <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
             className='title'
             type='text'
             placeholder='Title'
+            value={titleDetail}
+            onChange={(e) => setTitleDetail(e.target.value)}
           />
           <input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className='description'
-            type='text'
-            placeholder='Description'
+            className='cost'
+            type='number'
+            placeholder='Cost'
+            value={costDetail}
+            onChange={(e) => setCostDetail(e.target.value)}
           />
           <select
             className='currnecy'
             onChange={(e) => {
-              changeCurrency(e.target.value);
+              changeCurrencyDetail(e.target.value);
             }}
-            value={currency}
+            value={currencyDetail}
           >
             <option value='PLN'>PLN</option>
             <option value='EUR'>EUR</option>
             <option value='GBP'>GBP</option>
             <option value='USD'>USD</option>
           </select>
-          <div className='users'>
-            {users?.map((user, i) => (
-              <input
-                key={i}
-                className='user'
-                type='text'
-                value={user}
-                placeholder='User name'
-                onChange={(e) => handleUserChange(e, i)}
-                onFocus={handleUserFocus}
-              />
-            ))}
-
-            <button className='button' type='button' onClick={handleAddUser}>
-              New user
-            </button>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          <input
+            className='transactionDate'
+            type='date'
+            value={transactionDateDetail}
+            onChange={(e) => setTransactionDateDetail(e.target.value)}
+          />
+          <div>
+            Zapłacone przez:
+            <select
+              className='payer'
+              value={payerDetail}
+              onChange={(e) => {
+                changePayerDetail(e.target.value);
+              }}
+            >
+              {usersAmount?.map((user, i) => (
+                <option key={i} value={user.name}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
           </div>
-          <button
-            className='button'
-            type='submit'
-            onClick={() => {
-              if (title !== '' && users[0] !== '') {
-                togglePopup();
-              }
-            }}
-          >
+          <div className='users'>
+            {usersAmount?.map((user, i) => (
+              <div key={i}>
+                <input
+                  type='checkbox'
+                  checked={user.isChecked}
+                  onChange={() => handleCheckboxChange(i)}
+                />
+                {user.name}
+                <input
+                  type='number'
+                  value={user.isChecked ? costPerCheckedUser : 0}
+                  readOnly
+                />
+                {currencyDetail}
+              </div>
+            ))}
+          </div>
+          <button className='button' type='submit'>
             Add
           </button>
         </form>
