@@ -12,7 +12,7 @@ export const Navbar = () => {
   return (
     <div className='navbar'>
       <div className='links'>
-        <Link to='/bag'> Bag </Link>
+        {/* <Link to='/bag'> Bag </Link> */}
         <Link to='/map'> Map </Link>
         <Link to='/expenses'> Expenses </Link>
         <Link to='/'> Home </Link>
