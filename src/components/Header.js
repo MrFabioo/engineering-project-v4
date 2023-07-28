@@ -76,7 +76,7 @@ export const Header = () => {
                 <li>Wydatki grupowe</li>
               </Link>
               <Link
-                to='/'
+                to='/bags'
                 className={`cursor-pointer h-full flex items-center hover:text-indigo-700 text-sm text-white tracking-normal ${
                   activeItem === 3 ? 'border-b-2 border-white' : ''
                 }`}

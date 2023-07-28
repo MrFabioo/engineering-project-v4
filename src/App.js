@@ -6,20 +6,17 @@ import { Header } from './components/Header';
 import { Expens } from './components/Expens';
 import { SignIn } from './components/SignIn';
 import { AroundYou } from './components/AroundYou';
+import { Bags } from './pages/bag/Bags';
+import { Equipment } from './pages/bag/Equipment';
 
 function App() {
-  // Get the current location using useLocation hook
-  // const location = useLocation();
-
-  // Check if the current location is '/login' (SignIn page)
-  // const isSignInPage = location.pathname === '/login';
-
   return (
     <div className='h-screen'>
       <Router>
         <Header />
         <Routes>
-          {/* <Route path='/bag' element={<Bag />} /> */}
+          <Route path='/bags' element={<Bags />} />
+          <Route path='/bags/:id' element={<Equipment />} />
           <Route path='/map' element={<AroundYou />} />
           <Route path='/login' element={<SignIn />} />
           <Route path='/expenses' element={<Trips />} />
