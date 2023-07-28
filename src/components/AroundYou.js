@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { getPlacesData } from '../api';
 
-import { getPlacesData } from '../../api';
-import Header from './Header';
-import List from './List';
-import Map from './Map';
+import { MapSidebar } from './MapSidebar';
+import { Map } from './Map';
 
-import './main.css';
-
-export const Main = () => {
+export const AroundYou = () => {
   const [places, setPlaces] = useState([]);
   const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [childClicked, setChildClicked] = useState(null);
@@ -29,9 +26,9 @@ export const Main = () => {
   }, []);
 
   useEffect(() => {
-    const filteredPlaces = places.filter((place) => place.rating > rating);
+    const filteredPlaces = places.filter((place) => place.rating >= rating);
     setFilteredPlaces(filteredPlaces);
-  }, [rating]);
+  }, [rating, places]);
 
   useEffect(() => {
     if (bounds.sw && bounds.ne) {
@@ -45,11 +42,10 @@ export const Main = () => {
     }
   }, [type, bounds]);
   return (
-    <div className='wrapper'>
-      <div className='left'>
-        <Header setCoords={setCoords} />
-        <List
-          className='list'
+    <div className='flex flex-no-wrap'>
+      <div className='absolute sm:relative bg-gray-800 shadow flex-col justify-between hidden sm:flex border-t border-gray-700'>
+        <MapSidebar
+          setCoords={setCoords}
           places={filteredPlaces.length ? filteredPlaces : places}
           isLoading={isLoading}
           childClicked={childClicked}
@@ -59,7 +55,7 @@ export const Main = () => {
           setRating={setRating}
         />
       </div>
-      <div className='right'>
+      <div className='container mx-auto md:w-4/5 w-11/12 h-[calc(100vh-64px)]'>
         <Map
           className='map'
           setCoords={setCoords}

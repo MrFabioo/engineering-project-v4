@@ -6,9 +6,10 @@ const PlaceDetails = ({ place, selected, refProp }) => {
 
   return (
     <div className='card'>
+      <hr className='border-gray-300' />
+      <h5 className='text-xl text-center my-2'>{place.name}</h5>
       <div className='image'>
         <img
-          style={{ width: 350 }}
           src={
             place.photo
               ? place.photo.images.large.url
@@ -19,7 +20,6 @@ const PlaceDetails = ({ place, selected, refProp }) => {
         />
       </div>
       <div className='content'>
-        <h5>{place.name}</h5>
         <div className='details'>
           <p>
             Rating: {place.rating} spośród {place.num_reviews} wyników
