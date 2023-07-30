@@ -45,7 +45,7 @@ export const Trips = () => {
     setPopupIsOpen(!popupIsOpen);
   };
   return (
-    <div>
+    <div className='min-h-footer'>
       {popupIsOpen && <TripsPopup togglePopup={togglePopup} db={db} />}
       <div
         onClick={() => togglePopup()}

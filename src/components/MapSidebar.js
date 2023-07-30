@@ -90,7 +90,7 @@ export const MapSidebar = ({
   return (
     <>
       <div>
-        <div className='lg:max-w-[384px] md:max-w-[720px] w-full shadow rounded mx-auto pb-10 px-6 '>
+        <div className='lg:max-w-[384px] md:max-w-[720px] w-full shadow rounded mx-auto px-6 '>
           <div className='mb-2'>
             <div className='mt-3 relative'>
               <p className='text-xl text-center font-medium leading-none text-gray-100 mb-3'>
@@ -100,7 +100,7 @@ export const MapSidebar = ({
             <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
               <div className='flex justify-start items-center py-2 relative'>
                 <input
-                  className='text-sm leading-none text-left text-gray-600 px-4 py-3 w-full border rounded border-gray-300  outline-none'
+                  className='text-sm leading-none text-left text-gray-600 px-4 py-3 w-full border rounded border-gray-300 outline-none'
                   type='text'
                   placeholder='Search'
                 />

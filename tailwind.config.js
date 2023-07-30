@@ -4,6 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      minHeight: {
+        'footer': 'calc(100% - 48px - 64px)',
+      },
       minWidth: {
         '3/4': '75%',
       },

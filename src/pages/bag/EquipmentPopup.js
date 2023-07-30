@@ -1,26 +1,26 @@
 import { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 
-export const BagsPopup = ({ togglePopup, db }) => {
-  const [title, setTitle] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+export const EquipmentPopup = ({ togglePopup, db, id }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState(1);
+  const [note, setNote] = useState('');
 
   const createExpens = async (e) => {
     e.preventDefault(e);
-    if (title === '') {
-      alert('Tytuł nie może być pusty!');
+    if (name === '') {
+      alert('Nazwa przedmiotu nie może być pusta!');
       return;
     }
 
-    await addDoc(collection(db, 'bags'), {
-      title: title,
-      from: from,
-      to: to,
+    await addDoc(collection(db, 'bags', id, 'equipment'), {
+      name: name,
+      number: number,
+      note: note,
     });
-    setTitle('');
-    setFrom('');
-    setTo('');
+    setName('');
+    setNumber(1);
+    setNote('');
     togglePopup();
   };
 
@@ -36,36 +36,36 @@ export const BagsPopup = ({ togglePopup, db }) => {
         >
           <div className='relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400'>
             <h1 className='text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4'>
-              Dodaj do listy bagażowej
+              Zawartość bagażu
             </h1>
             <label
               htmlFor='name'
               className='text-gray-800 text-sm font-bold leading-tight tracking-normal'
             >
-              Tytuł
+              Nazwa przedmiotu
             </label>
             <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               type='text'
               className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
             />
             <label className='text-gray-800 text-sm font-bold leading-tight tracking-normal'>
-              Wyjazd
+              Ilość
             </label>
             <input
-              value={from}
-              onChange={(e) => setFrom(e.target.value)}
-              type='date'
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              type='number'
               className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
             />
             <label className='text-gray-800 text-sm font-bold leading-tight tracking-normal'>
-              Powrót
+              Notatka
             </label>
             <input
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              type='date'
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              type='text'
               className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
             />
             <div className='flex items-center justify-start w-full'>

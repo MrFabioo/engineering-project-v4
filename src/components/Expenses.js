@@ -43,7 +43,7 @@ export const Expenses = () => {
   };
 
   return (
-    <div>
+    <div className='min-h-footer'>
       {popupIsOpen && (
         <ExpensesPopup
           togglePopup={togglePopup}

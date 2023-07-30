@@ -427,171 +427,84 @@ export const Header = () => {
                     </div>
                   </div>
                   <ul className='f-m-m'>
-                    <a className='cursor-pointer'>
-                      <li className='text-white pt-10'>
-                        <div className='flex items-center'>
-                          <div className='w-6 h-6 md:w-8 md:h-8 text-indigo-700'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              className='icon icon-tabler icon-tabler-grid'
-                              viewBox='0 0 24 24'
-                              strokeWidth='1.5'
-                              stroke='currentColor'
-                              fill='none'
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                            >
-                              <path stroke='none' d='M0 0h24v24H0z' />
-                              <rect x={4} y={4} width={6} height={6} rx={1} />
-                              <rect x={14} y={4} width={6} height={6} rx={1} />
-                              <rect x={4} y={14} width={6} height={6} rx={1} />
-                              <rect x={14} y={14} width={6} height={6} rx={1} />
-                            </svg>
-                          </div>
-                          <p className='text-indigo-700 xl:text-base text-base ml-3'>
-                            Dashboard
-                          </p>
-                        </div>
-                      </li>
-                    </a>
-                    <a className='cursor-pointer'>
-                      <li className='text-white pt-8'>
-                        <div className='flex items-center justify-between'>
+                    <Link
+                      to='/'
+                      className={`cursor-pointer h-full flex items-center hover:text-indigo-700 text-sm text-white tracking-normal`}
+                      onClick={() => handleItemClick(0)}
+                    >
+                      <a className='cursor-pointer'>
+                        <li className='text-white pt-10'>
                           <div className='flex items-center'>
-                            <div className='w-6 h-6 md:w-8 md:h-8 text-white'>
-                              <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                className='icon icon-tabler icon-tabler-puzzle'
-                                viewBox='0 0 24 24'
-                                strokeWidth='1.5'
-                                stroke='currentColor'
-                                fill='none'
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                              >
-                                <path stroke='none' d='M0 0h24v24H0z' />
-                                <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
-                              </svg>
-                            </div>
-                            <p className='text-white xl:text-base  text-base ml-3'>
-                              Products
+                            <p className='text-indigo-700 xl:text-base text-base ml-3'>
+                              Strona główna
                             </p>
                           </div>
-                        </div>
-                      </li>
-                    </a>
-                    <a className='cursor-pointer'>
-                      <li className='text-white pt-8'>
-                        <div className='flex items-center'>
-                          <div className='w-6 h-6 md:w-8 md:h-8 text-white'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              className='icon icon-tabler icon-tabler-compass'
-                              viewBox='0 0 24 24'
-                              strokeWidth='1.5'
-                              stroke='currentColor'
-                              fill='none'
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                            >
-                              <path stroke='none' d='M0 0h24v24H0z' />
-                              <polyline points='8 16 10 10 16 8 14 14 8 16' />
-                              <circle cx={12} cy={12} r={9} />
-                            </svg>
+                        </li>
+                      </a>
+                    </Link>
+                    <Link
+                      to='/map'
+                      className={`cursor-pointer h-full flex items-center hover:text-indigo-700 text-sm text-white tracking-normal`}
+                      onClick={() => handleItemClick(0)}
+                    >
+                      <a className='cursor-pointer'>
+                        <li className='text-white pt-8'>
+                          <div className='flex items-center justify-between'>
+                            <div className='flex items-center'>
+                              <p className='text-white xl:text-base  text-base ml-3'>
+                                Miejsca w okolicy
+                              </p>
+                            </div>
                           </div>
-                          <p className='text-white xl:text-base  text-base ml-3'>
-                            Performance
-                          </p>
-                        </div>
-                      </li>
-                    </a>
-                    <li className='text-white pt-8 cursor-pointer'>
-                      <div className='flex items-center justify-between'>
-                        <div className='flex items-center'>
-                          <div className='w-6 h-6 md:w-8 md:h-8 text-white'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              className='icon icon-tabler icon-tabler-code'
-                              viewBox='0 0 24 24'
-                              strokeWidth='1.5'
-                              stroke='currentColor'
-                              fill='none'
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                            >
-                              <path stroke='none' d='M0 0h24v24H0z' />
-                              <polyline points='7 8 3 12 7 16' />
-                              <polyline points='17 8 21 12 17 16' />
-                              <line x1={14} y1={4} x2={10} y2={20} />
-                            </svg>
+                        </li>
+                      </a>
+                    </Link>
+                    <Link
+                      to='/expenses'
+                      className={`cursor-pointer h-full flex items-center hover:text-indigo-700 text-sm text-white tracking-normal`}
+                      onClick={() => handleItemClick(0)}
+                    >
+                      <a className='cursor-pointer'>
+                        <li className='text-white pt-8'>
+                          <div className='flex items-center'>
+                            <p className='text-white xl:text-base  text-base ml-3'>
+                              Wydatki grupowe
+                            </p>
                           </div>
-                          <p className='text-white xl:text-base  text-base ml-3'>
-                            Deliverables
-                          </p>
-                        </div>
-                      </div>
-                    </li>
+                        </li>
+                      </a>
+                    </Link>
+                    <Link
+                      to='/bags'
+                      className={`cursor-pointer h-full flex items-center hover:text-indigo-700 text-sm text-white tracking-normal`}
+                      onClick={() => handleItemClick(0)}
+                    >
+                      <a className='cursor-pointer'>
+                        <li className='text-white pt-8'>
+                          <div className='flex items-center'>
+                            <p className='text-white xl:text-base  text-base ml-3'>
+                              Rzeczy do spakowania
+                            </p>
+                          </div>
+                        </li>
+                      </a>
+                    </Link>
                   </ul>
                 </div>
                 <div className='w-full pt-4'>
-                  <div className='flex justify-center mb-4 w-full'>
-                    <div className='relative w-full'>
-                      <div className='text-gray-500 absolute ml-4 inset-0 m-auto w-4 h-4'>
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='icon icon-tabler icon-tabler-search'
-                          width={16}
-                          height={16}
-                          viewBox='0 0 24 24'
-                          strokeWidth={1}
-                          stroke='#A0AEC0'
-                          fill='none'
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                        >
-                          <path stroke='none' d='M0 0h24v24H0z' />
-                          <circle cx={10} cy={10} r={7} />
-                          <line x1={21} y1={21} x2={15} y2={15} />
-                        </svg>
-                      </div>
-                      <input
-                        className='bg-gray-100 focus:outline-none rounded w-full text-sm text-gray-500 bg-gray-700 pl-10 py-2'
-                        type='text'
-                        placeholder='Search'
-                      />
-                    </div>
-                  </div>
                   <div className='border-t border-gray-700'>
                     <div className='w-full flex items-center justify-between pt-1'>
                       <div className='flex items-center'>
                         <img
-                          alt='profile-pic'
-                          src='https://tuk-cdn.s3.amazonaws.com/assets/components/boxed_layout/bl_1.png'
-                          className='w-8 h-8 rounded-md'
+                          className='rounded h-10 w-10 object-cover'
+                          src={user?.photoURL || ''}
+                          alt='logo'
                         />
                         <p className=' text-white text-base leading-4 ml-2'>
-                          Jane Doe
+                          {user?.displayName}
                         </p>
                       </div>
                       <ul className='flex'>
-                        <li className='cursor-pointer text-white pt-5 pb-3'>
-                          <div className='w-6 h-6 md:w-8 md:h-8'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              className='icon icon-tabler icon-tabler-messages'
-                              viewBox='0 0 24 24'
-                              strokeWidth={1}
-                              stroke='currentColor'
-                              fill='none'
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                            >
-                              <path stroke='none' d='M0 0h24v24H0z' />
-                              <path d='M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10' />
-                              <path d='M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2' />
-                            </svg>
-                          </div>
-                        </li>
                         <li className='cursor-pointer text-white pt-5 pb-3 pl-3'>
                           <div className='w-6 h-6 md:w-8 md:h-8'>
                             <svg

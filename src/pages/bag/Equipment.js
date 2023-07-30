@@ -10,6 +10,7 @@ import {
   deleteDoc,
   getDocs,
 } from 'firebase/firestore';
+import { EquipmentPopup } from './EquipmentPopup';
 
 export const Equipment = () => {
   const location = useLocation();
@@ -47,8 +48,38 @@ export const Equipment = () => {
       console.error('Error deleting expense:', error);
     }
   };
+
+  const [popupIsOpen, setPopupIsOpen] = useState(false);
+
+  const togglePopup = () => {
+    setPopupIsOpen(!popupIsOpen);
+  };
   return (
     <div className='w-full flex justify-center'>
+      {popupIsOpen && (
+        <EquipmentPopup togglePopup={togglePopup} db={db} id={id} />
+      )}
+      <div
+        onClick={() => togglePopup()}
+        className='absolute right-5 bottom-5 text-white cursor-pointer focus:outline-none border border-transparent focus:border-gray-800 focus:shadow-outline-gray bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 w-20 h-20 rounded-full flex items-center justify-center'
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          className='icon icon-tabler icon-tabler-plus'
+          width={48}
+          height={48}
+          viewBox='0 0 24 24'
+          strokeWidth='2'
+          stroke='currentColor'
+          fill='none'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        >
+          <path stroke='none' d='M0 0h24v24H0z' />
+          <line x1={12} y1={5} x2={12} y2={19} />
+          <line x1={5} y1={12} x2={19} y2={12} />
+        </svg>
+      </div>
       <div className='w-1/2'>
         <div className='border rounded-lg border pb-6 border-gray-200'>
           <div className='flex-row items-center border-b border-gray-200 justify-between px-6 py-3'>

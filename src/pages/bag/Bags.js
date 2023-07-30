@@ -43,7 +43,7 @@ export const Bags = () => {
     setPopupIsOpen(!popupIsOpen);
   };
   return (
-    <div>
+    <div className='min-h-footer'>
       {popupIsOpen && <BagsPopup togglePopup={togglePopup} db={db} />}
       <div
         onClick={() => togglePopup()}

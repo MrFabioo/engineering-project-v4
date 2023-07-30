@@ -52,7 +52,7 @@ export const Expens = () => {
 
   const filteredExpense = filtered.length > 0 ? filtered[0] : null;
   return (
-    <div className='w-full flex justify-center'>
+    <div className='min-h-footer w-full flex justify-center'>
       {filteredExpense && (
         <div className='w-1/2'>
           {/* <div className='flex flex-col lg:flex-row p-4 lg:p-8 justify-between items-start lg:items-stretch w-full'>
